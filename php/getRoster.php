@@ -1,0 +1,77 @@
+<?php
+
+ob_start();
+    require("constants.php");
+    $tbl_name="teamroster"; // Table name 
+
+    // Load  Variables
+    $teamid = $_REQUEST['teamid'];
+
+    $sql="SELECT * FROM $tbl_name WHERE (teamid = '$teamid') AND (Inactive != '1') AND (manager != '2')";
+    $result = mysqli_query($sql);    
+    $counter = 0;
+
+    echo "<ul data-role='listview' data-inset='true'>";
+        echo "<li data-role='list-divider'>";
+            echo "<div class='ui-grid-a'>";
+            echo "<div class='ui-block-a' style='text-align: left;'>Roster</div>";
+            echo "<div class='ui-block-b' style='text-align: right;' id='teamRosterCount'>Players: 0</div>";
+            echo "</div>";
+        echo "</li>";
+
+    // Get SQL Results
+    while ($row = mysqli_fetch_assoc($result)) {
+            
+        echo "<li class='ui-field-contain ui-body ui-br ui-btn-up-c ui-corner-top'>";
+      
+            echo "<table style='width: 100%;'>";
+                    echo "<tr>";
+                        echo "<td style='width: 15%;'>";
+                            // Check For Picture
+                                if ($row["ImgURL"] == ""){
+                                    echo "<img src='http://devmobile.tallyrec.com/images/portraits/unknown.png' class='rosterImg'>";
+                                }
+                                else {
+                                    echo "<img src='http://devmobile.tallyrec.com/" . $row["ImgURL"] . "' class='rosterImg'>";
+                                }
+                        echo "</td>";
+                        echo "<td style='width: 80%; font-size: 8pt;'>";
+                            // Get Number and Name
+                                //Number
+                                if ($row["playernumber"] == ""||$row["playernumber"] == "-"){
+                                    echo "  ";
+                                }
+                                else {
+                                    echo $row["playernumber"] . " ";
+                                }
+                                //Name
+                                if ($row['nickname'] == ""){
+                                    echo $row["lname"] . ", " . $row["fname"];
+                                }
+                                else {
+                                    echo $row["nickname"];
+                                }
+                        echo "</td>";
+                                echo "<td style='width: 5%;'>";
+                                echo "<a class='RosterSelect' data-rosterimg='" . $row["ImgURL"] . "' data-rosterid='" . $row["rosterid"] . "' data-rosternumber='" . $row["playernumber"] . "' data-rostername='";
+                                    //Name
+                                     if ($row['nickname'] == ""){
+                                         echo $row["lname"] . ", " . $row["fname"];
+                                     }
+                                     else {
+                                         echo $row["nickname"];
+                                     }
+                                echo "' data-role='button' data-icon='arrow-r' data-inline='true' data-iconpos='notext' data-mini='true'></a>";
+                        echo "</td>";
+                    echo "</tr>";
+                echo "</table>";
+        echo "</li>";
+        
+        $counter++;     
+    }   
+    
+    echo "</ul>";
+    
+ob_end_flush();
+
+?>

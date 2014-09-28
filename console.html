@@ -1,0 +1,2665 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TallyRec</title>
+        <!-- the meta "viewport" tag sets the screen width to the pixel width of the device  -->
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <link rel="apple-touch-icon" href="images/AppIcon/TRIcon57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="images/AppIcon/TRIcon72x72.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="images/AppIcon/TRIcon114x114.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="images/AppIcon/TRIcon144x144.png" />
+    
+        <link href="themes/TallyRec.css" rel="stylesheet" type="text/css"/>
+        <link href="css/jquery.mobile.structure-1.3.1.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/iOS.css" rel="stylesheet" type="text/css" />
+        <link href="images/CalendarIcons/Calendar.css" rel="stylesheet" media="all" type="text/css" />
+
+        <script src="js/cordova-2.4.0.js" type="text/javascript"></script>
+        <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+        <script src="js/jquery.mobile-1.3.1.min.js" type="text/javascript"></script>
+
+        <script src="js/functionsConsole.js" type="text/javascript"></script>
+        <script src="js/functionsLeague.js" type="text/javascript"></script>
+            
+        <script src="js/plugins/PushNotification.js" type="text/javascript"></script>
+        <script src="js/plugins/SAiOSAdPlugin.js" type="text/javascript"></script>
+
+        <script src="js/Calendar.js" type="text/javascript"></script>
+        <script type="text/javascript">
+             window.onload = function () {
+                 new JsDatePick({
+                     useMode: 2,
+                     target: "GameDate",
+                     dateFormat: "%Y-%m-%d"
+                 });
+
+                 new JsDatePick({
+                     useMode: 2,
+                     target: "quickTeamGameDate",
+                     dateFormat: "%Y-%m-%d"
+                 });
+             };
+
+        </script>
+
+</head>
+<body>
+<!-- Start of Console -->
+
+<div data-role="page" data-title="TallyRec" id="console">
+        
+        <!-- Messages Panel -->
+                <div data-role="panel" id="menuPanel" data-position="left" data-display="push" style="background:#3f576e;">
+            
+                        <div style="width:100%;">
+                            <ul data-role="listview" >
+                                <li>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <input type="search" id="consolePanelSearchField" value="" data-mini="true" placeholder="Search Teams">
+                                            </td>
+                                            <td><a id="consolePanelSearchBtn" data-role="button" data-mini="true" >Go</a></td>
+                                        </tr>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="consolePanelMyName">
+                            <ul data-role="listview">
+                                <li>
+                                    <a href="#console"><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul data-role="listview">
+                                <li data-role="list-divider">Favorites</li>
+                                <li>
+                                     <a href="#PendingRequests">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                                </li>
+                                <li>
+                                    <a href="#myMessages">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="consolePanelMyTeamsDiv">
+                            <ul data-role="listview">
+                                <li data-role="list-divider">My Teams</li>
+                                <li>
+                                    <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="consolePanelFollowingTeamsDiv">
+                            <ul data-role="listview">
+                                <li data-role="list-divider">Following</li>
+                                <li>
+                                    <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                        <ul data-role="listview">
+                            <li data-role="list-divider">Main Console</li>
+                            <li>
+                                <a href="#createteam">Create Team</a>
+                            </li>
+                            <li>
+                                <a href="#pastteams">Past Teams</a>
+                            </li>
+                            <li>
+                                <a href="#settings">Settings</a>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+        <!-- End of Panel -->
+        
+        <div data-role="header" data-position="fixed" data-id="headSturdy">
+            <a id="menuPanelOpenClose" data-role="button" data-icon="bars">Menu</a>
+            <h1>TallyRec</h1>
+            
+        </div><!-- /header -->
+
+         <div data-role="content">
+
+                <!--
+                <ul data-role="listview" data-inset="true" data-icon="false">
+                    <li data-role="list-divider" class="ui-corner-top" id="myNameConsole">Main Console</li>
+                    <li>
+                            <img src="images/AppIcon/TRIcon72x72.png" id="myImage" alt=""/>
+                            <p style="text-align:left;white-space:normal;" id="TallyRecMessage"></p>
+                        
+                    </li>
+                </ul>
+                -->
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider" class="ui-corner-top">Main Console</li>
+                    <li>
+                        <a href="#createteam" data-iconpos="right" class="ui-link-inherit">Create Team</a>
+                    </li>                  
+                    <li>
+                        <a href="#PendingRequests" data-iconpos="right" class="ui-link-inherit">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                    </li>
+                    <li>
+                        <a href="#myMessages" data-iconpos="right" class="ui-link-inherit">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                    </li>
+                </ul>
+                
+                <!-- My Leagues -->
+                <div id="MyLeaguesDiv"></div>
+                
+                <!-- My Teams -->
+                <div id="MyTeamsDiv"></div>
+
+                <!-- Following Teams -->
+                <div id="FollowDiv">
+                    <ul data-role="listview" data-inset="true">
+                        <li data-role="list-divider" data-role="button" data-icon="search" data-iconpos="notext">
+                            Following 
+                        </li>
+                        <li data-icon="search" ><a href="#search" style="font-size: 8pt;">Loading...</a></li>
+	                </ul> 
+                </div>
+
+                <br />
+                <br />
+         </div>
+        <!-- /content -->
+
+ </div>
+        <!-- /end of page -->
+
+        <div data-role="page" data-title="TallyRec" id="settings">
+         
+         <!-- Start of Panel -->
+        <div data-role="panel"  id="settingsPanel" data-position="left" data-display="push" style="background: #3f576e;">       
+            <div style="width:100%;">
+                <ul data-role="listview">
+                    <li>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="search" name="search-1" id="settingsPanelSearchInput" value="" data-mini="true" placeholder="Search Teams">
+                                </td>
+                                <td><a id="settingsPanelSearchBtn" data-role="button" data-mini="true" >Go</a></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <div id="settingsPanelMyName">
+                <ul data-role="listview">
+                    <li>
+                        <a href="" ><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Favorites</li>
+                    <li>
+                         <a href="#PendingRequests">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                    </li>
+                    <li>
+                        <a href="#myMessages">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div id="settingsPanelMyTeamsDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">My Teams</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="settingsPanelFollowingDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">Following</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Main Console</li>
+                    <li>
+                        <a href="#createteam">Create Team</a>
+                    </li>
+                    <li>
+                        <a href="#pastteams">Past Teams</a>
+                    </li>
+                    <li>
+                        <a href="#settings">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- End of Panel -->
+         
+         <div data-role="header" data-position="fixed" data-id="headSturdy">
+            <a id="settingsPanelOpenClose" data-role="button" data-icon="bars">Menu</a>
+            <h1>TallyRec</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+            <p id="teamsettingserror"></p>
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="fieldcontain" style="border: 1px solid #000;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%; text-align: center;"><span id="SettingsUsername">Username</span></td>
+                                <td style="width: 50%; text-align: center;"><a id="logoutBtn" data-mini="true" data-role="button" data-inline="true">Logout</a></td>
+                            </tr>
+                        </table>
+                    </li>
+                 </ul>
+                 <form id="usersettingsform">
+                    <ul data-role="listview" data-inset="true">
+                        <li data-role="list-divider">My Information</li>
+                        <li data-role="fieldcontain" style="border: 1px solid #000;">
+                            <table style="width: 100%; font-size: 8pt;">
+                            <tr>
+                                <td style="width: 33%;">First Name:</td>
+                                <td><input type="text" name="test" style="font-size:8pt;" id="SettingsFname"  /></td>
+                            </tr>
+                            </table>
+                        
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Last Name:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt;" id="SettingsLname"  /></td>
+                                </tr>
+                            </table>
+                            
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">E-Mail:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt;" id="SettingsEmail"  /></td>
+                                </tr>
+                            </table>
+                            
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Password:</td>
+                                    <td><input type="password" name="test" data-inline="true" style="font-size:8pt;" id="SettingsPassword"  /></td>
+                                </tr>
+                            </table>
+                            
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Phone:</td>
+                                    <td><input type="tel" name="test" style="font-size:8pt;" id="SettingsPhone"  /></td>
+                                </tr>
+                            </table>
+                        </li>
+                 <li style="border-top: none;">
+                    <fieldset data-role="controlgroup" data-type="horizontal" style="text-align: center;" data-mini="true" data-inline="true">
+    	                <legend>Choose an avatar:</legend>
+         	                <input type="radio" name="avatar" id="Female" value="Female" checked="checked" />
+         	                <label for="Female"><img  src="images/portraits/Female.png" class="personImg" alt="" />
+                            </label>
+
+         	                <input type="radio" name="avatar" id="Male" value="Male"  />
+         	                <label for="Male"><img src="images/portraits/Male.png" class="personImg" alt=""/>
+                            </label>
+
+         	                <input type="radio" name="avatar" id="Unknown" value="Unknown"  />
+         	                <label for="Unknown"><img src="images/portraits/Unknown.png" class="personImg" alt=""/>
+                            </label>
+                    </fieldset>
+                 </li> 
+                 </ul>
+                 <a id="saveSettings" data-role="button">Save</a>
+                </form>
+                <br />
+                <br />
+        </div>
+        <!-- /content -->
+
+        </div>
+        <!-- /end of page -->
+
+        <div data-role="page" data-title="TallyRec" id="createteam">
+        
+        <!-- Start of Panel -->
+        <div data-role="panel"  id="createTeamPanel" data-position="left" data-display="push" style="background: #3f576e;">       
+            <div style="width:100%;">
+                <ul data-role="listview">
+                    <li>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="search" name="search-1" id="createTeamPanelSearchInput" value="" data-mini="true" placeholder="Search Teams">
+                                </td>
+                                <td><a id="createTeamPanelSearchBtn" data-role="button" data-mini="true" >Go</a></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <div id="createteamPanelMyName">
+                <ul data-role="listview">
+                    <li>
+                        <a href="" ><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Favorites</li>
+                    <li>
+                         <a href="#PendingRequests">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                    </li>
+                    <li>
+                        <a href="#myMessages">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div id="createTeamPanelMyTeamsDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">My Teams</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="createTeamPanelFollowingDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">Following</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Main Console</li>
+                    <li>
+                        <a href="#createteam">Create Team</a>
+                    </li>
+                    <li>
+                        <a href="#pastteams">Past Teams</a>
+                    </li>
+                    <li>
+                        <a href="#settings">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- End of Panel -->
+
+        <div data-role="header" data-position="fixed" data-id="headSturdy">
+             <a id="createTeamPanelOpenClose" data-role="button" data-icon="bars">Menu</a>
+            <h1>TallyRec</h1>
+            
+        </div><!-- /header -->
+            
+         <div data-role="content">
+            <form name="CreateTeamForm">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">Create Team</li>
+                    <li data-role="fieldcontain" style="border: 1px solid #000;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">Sport:</td>
+                                <td id="availableSports" >
+                                <select name="select-choice-1" id="newTeamSport" data-mini="true" >
+                                    <option value="1">Airsoft</option>
+                                    <option value="2">Baseball</option>
+                                    <option value="3">Basketball</option>
+                                    <option value="4">Cheerleading</option>
+                                    <option value="16">Dance</option>
+                                    <option value="5">Football</option>
+                                    <option value="19">Golf</option>
+                                    <option value="6">Hockey</option>
+                                    <option value="17">Kickball</option>
+                                    <option value="7">Lacrosse</option>
+                                    <option value="8">Paintball</option>
+                                    <option value="15">Racquetball</option>
+                                    <option value="9">Rugby</option>
+                                    <option value="10">Soccer</option>
+                                    <option value="11">Softball</option>
+                                    <option value="12">Tennis</option>
+                                    <option value="18">Track &amp; Field</option>
+                                    <option value="13">Volleyball</option>
+                                    <option value="14">Wrestling</option>
+                                    <option value="100">Other</option>
+                                </select>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">Team Name:</td>
+                                <td><input type="text" id="newTeamName" data-mini="true" style="font-size:8pt;"  /></td>
+                            </tr>
+                        </table>
+                                            
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">City:</td>
+                                <td><input type="text" name="test" style="font-size:8pt;" id="newTeamCity"  /></td>
+                            </tr>
+                        </table>
+                        
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">State:</td>
+                                <td><input type="text" maxlength="2" name="test" style="font-size:8pt;" id="newTeamState"  /></td>
+                            </tr>
+                       </table>
+                       
+                       <table style="width: 100%;">
+                        <tr>
+                            <td style="font-size: 8pt; width: 33%;">Home Park:</td>
+                            <td><input type="text" name="test" style="font-size:8pt;" id="newTeamPark"  /></td>
+                        </tr>
+                       </table>
+                       
+                       <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">League:</td>
+                                <td><input type="text" name="test" style="font-size:8pt;" id="newTeamLeague"  /></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </form>
+
+                <table style="width:100%;">
+                    <tr>
+                        <td><a id="createNewTeamBtn" data-role="button" data-mini="true">Create Your Team!</a></td>
+                    </tr>
+                </table>
+            <br />
+            <br />
+        </div>
+        </div>
+    <!-- /end of page -->
+
+    <div data-role="page" data-title="TallyRec" id="pastteams">
+        
+        <!-- Start of Panel -->
+        <div data-role="panel"  id="pastTeamsPanel" data-position="left" data-display="push" style="background: #3f576e;">       
+            <div style="width:100%;">
+                <ul data-role="listview">
+                    <li>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="search" name="search-1" id="pastTeamsPanelSearchInput" value="" data-mini="true" placeholder="Search Teams">
+                                </td>
+                                <td><a id="pastTeamsPanelSearchBtn" data-role="button" data-mini="true" >Go</a></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <div id="pastteamPanelMyName">
+                <ul data-role="listview">
+                    <li>
+                        <a href="" ><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Favorites</li>
+                    <li>
+                         <a href="#PendingRequests">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                    </li>
+                    <li>
+                        <a href="#myMessages">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div id="pastTeamsPanelMyTeamsDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">My Teams</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="pastTeamsPanelFollowingDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">Following</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Main Console</li>
+                    <li>
+                        <a href="#createteam">Create Team</a>
+                    </li>
+                    <li>
+                        <a href="#pastteams">Past Teams</a>
+                    </li>
+                    <li>
+                        <a href="#settings">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- End of Panel -->
+
+        <div data-role="header" data-position="fixed" data-id="headSturdy">
+             <a id="pastTeamsPanelOpenClose" data-role="button" data-icon="bars">Menu</a>
+            <h1>TallyRec</h1>
+            
+        </div><!-- /header -->
+            
+         <div data-role="content">
+            <!-- Past Teams -->
+            <div id="PastTeamsDiv"></div>
+        </div>
+    </div>
+
+
+    <!--
+    *
+    *   About Creating A League
+    *
+    -->
+
+    <div data-role="page" data-title="TallyRec" id="aboutleague">
+        
+        <div data-role="header" data-position="fixed" data-id="headSturdy">
+             <a href="#console" data-role="button" data-icon="arrow-l" data-direction="reverse" data-iconpos="left">Back</a>
+            <h1>TallyRec</h1>
+            
+        </div><!-- /header -->
+            
+         <div data-role="content">
+            <div style="text-align: center; background: #3f576e; color: White; border-radius: 15px; border: 1px solid black;">
+            
+                <h3>Why Create A League?</h3>
+            <p>
+                Creating a league takes TallyRec to a whole new level. It allows park managers to 
+                create the teams themselves, easily enter the league schedule, and then simply have your coaches connect
+                to their teams with their schedule already present. It allows the park manager to directly send important 
+                custom messages to all members of the park (weather changes, delays, park announcements, etc.). 
+            </p>
+            </div>
+            <table style="width:100%;">
+                <tr>
+                    <td><a href="#createleague" data-role="button" data-iconpos="right" data-icon="arrow-r">Continue</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- /end of page -->
+
+    <!--
+    *
+    *   Create A League
+    *
+    -->
+
+    <div data-role="page" data-title="TallyRec" id="createleague">
+        
+        <div data-role="header" data-position="fixed" data-id="headSturdy">
+             <a href="#aboutleague" data-role="button" data-icon="arrow-l" data-direction="reverse" data-iconpos="left">Back</a>
+            <h1>TallyRec</h1>
+            
+        </div><!-- /header -->
+            
+         <div data-role="content">
+            <form name="CreateLeagueForm">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">Create A League</li>
+                    <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c ui-corner-top">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">Sport:</td>
+                                <td id="Td2" >
+                                    <select name="select-choice-1" id="leagueSport" data-mini="true" >
+                                        <option value="1">Airsoft</option>
+                                        <option value="2">Baseball</option>
+                                        <option value="3">Basketball</option>
+                                        <option value="4">Cheerleading</option>
+                                        <option value="16">Dance</option>
+                                        <option value="5">Football</option>
+                                        <option value="19">Golf</option>
+                                        <option value="6">Hockey</option>
+                                        <option value="17">Kickball</option>
+                                        <option value="7">Lacrosse</option>
+                                        <option value="8">Paintball</option>
+                                        <option value="15">Racquetball</option>
+                                        <option value="9">Rugby</option>
+                                        <option value="10">Soccer</option>
+                                        <option value="11">Softball</option>
+                                        <option value="12">Tennis</option>
+                                        <option value="18">Track &amp; Field</option>
+                                        <option value="13">Volleyball</option>
+                                        <option value="14">Wrestling</option>
+                                        <option value="100">Other</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width: 100%;">
+                        <tr>
+                            <td style="font-size: 8pt; width: 33%;">Park:</td>
+                            <td><input type="text" name="test" style="font-size:8pt;" id="leaguePark"  /></td>
+                        </tr>
+                       </table>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">League Name:</td>
+                                <td><input type="text" id="leagueName" data-mini="true" style="font-size:8pt;"  /></td>
+                            </tr>
+                        </table>  
+                        
+                        <!--
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">Division:</td>
+                                <td><input type="text" name="test" style="font-size:8pt;" id="leagueDivision"  /></td>
+                            </tr>
+                        </table>
+                        -->
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">City:</td>
+                                <td><input type="text" name="test" style="font-size:8pt;" id="leagueCity"  /></td>
+                            </tr>
+                        </table>
+                        
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">State:</td>
+                                <td><input type="text" maxlength="2" name="test" style="font-size:8pt;" id="leagueState"  /></td>
+                            </tr>
+                       </table>
+                       <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">Season:</td>
+                                <td>
+                                    <select name="leagueSeasonSelection" id="leagueSeason" data-mini="true" >
+                                        <option value="1">Spring</option>
+                                        <option value="2">Summer</option>
+                                        <option value="3">Fall</option>
+                                        <option value="4">Winter</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                       <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 8pt; width: 33%;">Year:</td>
+                                <td id="leaguecreateyearDDL">
+                                    <select name="leagueYearSelection" id="leagueYear" data-mini="true" >
+                                        <option value="2013">Loading...</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+
+                <table style="width:100%;">
+                    <tr>
+                        <td><a id="createleagueBtn" data-role="button" data-iconpos="right" data-icon="arrow-r">Create Your League!</a></td>
+                    </tr>
+                </table>
+            </form>
+            <br />
+            <br />
+        </div>
+    </div>
+
+    <!-- /end of page -->
+
+    <div data-role="page" data-title="TallyRec" id="search">
+        
+        <!-- Start of Panel -->
+        <div data-role="panel"  id="searchPanel" data-position="left" data-display="push" style="background: #3f576e;">       
+            <div style="width:100%;">
+                <ul data-role="listview">
+                    <li>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="search" name="search-1" id="searchPanelInput" value="" data-mini="true" placeholder="Search Teams">
+                                </td>
+                                <td><a id="searchPanelBtn" data-role="button" data-mini="true" >Go</a></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <div id="searchMyNameDiv">
+                <ul data-role="listview">
+                    <li>
+                        <a href="" ><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Favorites</li>
+                    <li>
+                         <a href="#PendingRequests">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                    </li>
+                    <li>
+                        <a href="#myMessages">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div id="searchMyTeamsDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">My Teams</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="searchFollowTeamsDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">Following</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Main Console</li>
+                    <li>
+                        <a href="#createteam">Create Team</a>
+                    </li>
+                    <li>
+                        <a href="#pastteams">Past Teams</a>
+                    </li>
+                    <li>
+                        <a href="#settings">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- End of Panel -->
+        
+        <div data-role="header" data-position="fixed" data-id="headSturdy">
+            <a id="searchPanelOpenClose" data-role="button" data-icon="bars">Menu</a>
+            <h1>TallyRec</h1>
+        </div><!-- /header -->
+
+         <div data-role="content" style="background: url('images/background/TallyRecBackground.png')">
+                    
+         
+         
+         <ul data-role="listview" data-inset="false" >
+         <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c" style="background: #3f576e;">
+                <form id="SearchTeamForm">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 80%;"><input type="text" placeholder="Search by Team Name, City, or Park" id="initialTeamSearch" name="initialTeamSearch" data-inline="true" style="display: inline;  font-size: 8pt;"/></td>
+                            <td style="width: 20%;"><a href="" id="teamSearchBtn" data-mini="true" data-role="button">Find</a></td>
+                        </tr>
+                    </table>
+                </form>
+            </li>
+         </ul>
+            <div id="searchresults">
+                
+             </div>
+             <br />
+             <br />
+        </div>
+             
+                       
+        </div>
+        <!-- /content -->
+    <!-- /end of page -->
+
+
+    <!-- Pending Requests -->
+    <div data-role="page" data-title="TallyRec" id="PendingRequests">
+           
+           <!-- Start of Panel -->
+        <div data-role="panel"  id="notifyPanel" data-position="left" data-display="push" style="background: #3f576e;">       
+            <div style="width:100%;">
+                <ul data-role="listview">
+                    <li>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="search" name="search-1" id="notifyPanelSearchInput" value="" data-mini="true" placeholder="Search Teams">
+                                </td>
+                                <td><a id="notifyPanelSearchBtn" data-role="button" data-mini="true" >Go</a></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <div id="pendingreqPanelMyName">
+                <ul data-role="listview">
+                    <li>
+                        <a href="" ><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Favorites</li>
+                    <li>
+                         <a href="#PendingRequests">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                    </li>
+                    <li>
+                        <a href="#myMessages">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div id="notifyPanelMyTeams">
+                <ul data-role="listview">
+                    <li data-role="list-divider">My Teams</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="notifyPanelFollowing">
+                <ul data-role="listview">
+                    <li data-role="list-divider">Following</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Main Console</li>
+                    <li>
+                        <a href="#createteam">Create Team</a>
+                    </li>
+                    <li>
+                        <a href="#pastteams">Past Teams</a>
+                    </li>
+                    <li>
+                        <a href="#settings">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- End of Panel -->
+
+           <div data-role="header" data-position="fixed" data-id="headSturdy">
+             <a id="notifyPanelOpenClose" data-role="button" data-icon="bars">Menu</a>
+            <h1>TallyRec</h1>
+        </div><!-- /header -->
+        
+         <div data-role="content">
+            <a id="clearMyNotes" data-role="button" data-mini="true">Clear All Notifications</a>
+            <div id="mynotifications"> <!-- id="pendingTeams" --> 
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">Notifications</li>
+                    <li>Loading...</li>
+                </ul>
+            </div>
+            <br />
+            <br />
+        </div>
+        <!-- /content -->
+
+    </div>
+    <!-- /end of page -->
+
+    <!-- Start of Network Error Page-->
+    <div data-role="page" id="nonetwork">
+               <div data-role="header">
+            <h1>
+                TallyRec</h1>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <p><img src="images/logo/TallyRec-Logo.png" class="indexLogo" alt="" /></p>
+            <p>
+                No network connection available.</p>
+            <form>
+            <a href="console.html" rel="external" id="TryConnect" data-role="button" data-icon="refresh" data-iconpos="left" data-transition="pop">
+                Try Again</a>
+            </form>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /end of Network Error Page -->
+
+    <!--
+    *
+    *
+    *   Start of Team
+    *
+    *
+    -->
+
+    <!-- Start of Console -->
+    <div data-role="page" data-title="TallyRec" id="teamMain">
+        
+        <!-- Start of Panel -->
+        <div data-role="panel"  id="teamMainPanel" data-position="left" data-display="push" style="background: #3f576e;">       
+            <div style="width:100%;">
+                <ul data-role="listview">
+                    <li>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="search" name="search-1" id="teamMainPanelSearchInput" value="" data-mini="true" placeholder="Search Teams">
+                                </td>
+                                <td><a id="teamMainPanelSearchBtn" data-role="button" data-mini="true" >Go</a></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <div id="teamPanelMyName">
+                <ul data-role="listview">
+                    <li>
+                        <a href="" ><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Favorites</li>
+                    <li>
+                         <a href="#PendingRequests">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                    </li>
+                    <li>
+                        <a href="#myMessages">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div id="teamMainPanelMyTeamsDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">My Teams</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="teamMainPanelFollowingDiv">
+                <ul data-role="listview">
+                    <li data-role="list-divider">Following</li>
+                    <li>
+                        <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Main Console</li>
+                    <li>
+                        <a href="#createteam">Create Team</a>
+                    </li>
+                    <li>
+                        <a href="#pastteams">Past Teams</a>
+                    </li>
+                    <li>
+                        <a href="#settings">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- End of Panel -->
+        
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a id="teamMainPanelOpenClose" data-role="button" data-icon="bars">Menu</a>
+            <h1><span id="span2" class="SelectedTeamName">Team Name</span></h1>
+        </div>
+        
+        <!-- Main Team Information Div -->
+        <div data-role="content"> 
+            <table style="width:100%; font-size: 8pt; padding: 0;">
+                <tr>
+                    <td style="width:45%; text-align: center;"> 
+                        <div id="sportImageDiv">Loading.. </div>
+                    </td>
+                    <td style="width: 55%;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 100%; text-align: center;">
+                                    <div id="TeamMainInfo">
+                                        <ul data-role="listview" data-inset="true">
+                                            <li data-role="list-divider" style="text-align: center; font-size: 8pt;">Next</li>
+                                            <li style="text-align: center; font-size: 8pt;">
+                                                Loading...
+                                            </li>
+                                         </ul>
+                                    </div>
+                                    <div id="previousGame">
+                                        <ul data-role="listview" data-inset="true">
+                                            <li data-role="list-divider" style="text-align: center; font-size: 8pt;">Previous</li>
+                                            <li style="text-align: center; font-size: 8pt;">
+                                                Loading...
+                                            </li>
+                                         </ul>
+                                    </div>
+                                 </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+
+                    <!-- Team Message -->
+                    <td colspan="2" style="width: 100%;" id="teamnote">
+                        <ul data-role="listview" data-inset="true">
+                            <li data-role="list-divider" style="text-align: left; font-size: 8pt;">Team Message</li>
+                            <li style='font-size: 8pt;'>Loading...</li>
+                        </ul>
+                    </td>
+                     <!-- Team Message END -->
+                     <!-- Team Message END -->
+
+                </tr>
+            </table>
+
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><a href="#teamSchedule" data-role="button" ><img alt="" src="images/navIcons/IconSchedule.png" class="navIconImg"/>Schedule</a></div>
+                <div class="ui-block-b"><a href="#teamRoster" data-role="button" ><img alt="" src="images/navIcons/IconRoster.png" class="navIconImg"/>Roster</a></div>
+            </fieldset>
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><a href="#teamChat" data-role="button" ><img alt="" src="images/navIcons/IconChat.png" class="navIconImg"/>Chat</a></div>
+                <div class="ui-block-b"><a href="#teamStatistics" data-role="button" ><img alt="" src="images/navIcons/IconStats.png" class="navIconImg"/>Stats</a></div>
+            </fieldset>
+            <fieldset class="ui-grid-b">
+                <div class="ui-block-a"></div>
+                <div class="ui-block-b"><a href="#teamSettings" data-role="button" ><img alt="" src="images/navIcons/IconSettings.png" class="navIconImg"/>Team Settings</a></div>
+                <div class="ui-block-c"></div>
+            </fieldset>
+            
+            <!-- Team Navigation 
+            <table>
+                <tr> 
+                    <td class="navIcons">
+                        <a href="#teamSchedule" data-role="button">
+                            
+                                 Schedule
+                              
+                        </a>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td class="navIcons">
+                        <a href="#teamRoster" data-role="button" style="text-decoration: none; color: #3f576e;">
+                           
+                                <img alt="" src="images/navIcons/IconRoster.png" class="navIconImg"/> Roster
+                            
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="navIcons">
+                        <a href="#teamChat" data-role="button" style="text-decoration: none; color: #3f576e;">
+                            <div style="height:100%;width:100%">
+                                 Team Chat
+                            </div>    
+                        </a>
+                    </td> 
+                    <td>&nbsp;</td>
+                    <td class="navIcons" >
+                        <a href="#teamStatistics" data-role="button" style="text-decoration: none; color: #3f576e;">
+                            <div style="height:100%;width:100%">
+                                Team Stats
+                            </div>    
+                        </a>
+                    </td>   
+                </tr>
+            </table>  
+            <table style="width: 100%; margin: auto;font-size: 8pt;">
+                <tr>
+                    <td style="width: 25%;"></td>
+                    <td class="navIcons">
+                        <a href="#teamSettings" data-role="button" style="text-decoration: none; color: #3f576e;">
+                            <div style="height:100%;width:100%">
+                                <img alt="" src="images/navIcons/IconSettings.png" class="navIconImg"/> Team Settings
+                            </div>    
+                        </a>
+                    </td>
+                    <td style="width: 25%;"></td>
+                </tr>
+            </table>-->
+            <!-- Team Navigation END -->
+            <br />
+             <br />
+        </div>
+        <!-- /content -->
+    </div>
+
+    <!-- Start of Chat -->
+    <div data-role="page" data-title="TallyRec" id="teamChat">
+       
+        <!-- Header -->
+        <div data-role="header" data-position="fixed" id="teamChatFooter" data-id="headSturdy">
+            <a style="font-size: 8pt; border-radius: 15px;" href="#teamMain" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span14" class="SelectedTeamName"></span></h1>
+        </div>
+        
+        <!-- Content -->
+        <div data-role="content" id="teamChatContent">
+            <div id="chatnotallowed"><p><b>Team Chat Not Available.</b><br/>You must be on the team to view this section.</p></div>
+            <div id="chatallowed">
+
+                <ul data-role="listview" data-inset="false">
+                    <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c" style="background: #3f576e; border-bottom: 1px solid black;">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="width: 90%;">
+                                        <form id="sendchatform">
+                                            <textarea style="min-width: 95%;" id="ChatMessageInput" rows="1" class="SubmitMsgTxt" data-mini="true" maxlength="250" placeholder="Enter text here.."></textarea>
+                                        </form>
+                                    </td>
+                                    <td style="width: 10%;">
+                                        <div id="hidesend">
+                                            <button id="sendChatBtn" data-mini="true">Send</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                    </li>
+                </ul>
+
+                <br /><br />
+
+                <!-- Chat Container -->
+                <div id="chatMessages">
+                    <p>There are no messages at this time.</p>
+                </div>
+
+            </div>
+            <br />
+            <br />
+        </div>
+
+        <!-- /content -->
+    </div>
+
+    <!-- Start of Schedule -->
+    <div data-role="page" data-title="TallyRec" id="teamSchedule">
+        
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="#teamMain" style="font-size: 8pt; border-radius: 15px;" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span3" class="SelectedTeamName">Schedule</span></h1>
+        </div>
+
+        <div data-role="content">
+
+                    <div id="newGameBtnDiv">
+                        <button id="newGameBtn" data-mini="true" data-iconpos="center" style="font-size: 6pt;">Add Event</button>
+                        
+                            <div id="quickAddMoveDiv">
+                                <ul data-role="listview" data-inset="true">
+                                    <li data-role="list-divider">Quick Add Game</li>
+                                    <li style="text-align:center;font-size:8pt;">Rotate device to quick add  game.</li>
+                                </ul>
+                            </div>
+                            <div id="quickAddDiv">
+                                <ul data-role="listview" data-inset="true">
+                                    <li data-role="list-divider">Quick Add Game</li>
+                                    <li class="ui-field-contain ui-body ui-br ui-btn-up-c" style="border:1px solid #000;">
+                                        <div id="quickTeamGameDiv">
+                                        <form id="quickTeamGameForm">
+                                            <table style="width: 100%; border-radius: 15px; border-collapse: collapse;">
+                                                <tr>
+                                                    <td style="width:25%">
+                                                        <select id="quickTeamGameHomeAway" data-mini="true">
+                                                            <option value='1'>Home</option>
+                                                            <option value='0'>Away</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="width:25%"><input type="text" id="quickTeamGameDate" readonly="true" data-mini="true"/></td>
+                                                    <td style="width:25%"><input type="text" id="quickTeamGameTime" placeholder="Time" value="12:00 PM" data-mini="true"/></td>
+                                                    <td style="width:25%"><input type="text" id="quickTeamGameOpponent" placeholder="Opponent" data-mini="true"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4"><a id="quickTeamGameBtn" data-role="button" data-mini="true">Save</a></td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                    </div>
+        
+            
+            <div id="SelectedTeamScheduleDiv">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">
+                        <div class="ui-grid-c">
+                            <div class="ui-block-a" style="text-align: left;">
+                                </div>
+                            <div class="ui-block-b" style="text-align: right;">
+                                </div>
+                            <div class="ui-block-c" style="text-align: right;"></div>
+                            <div class="ui-block-d" style="text-align: right;"></div>
+                        </div>
+                    </li>
+                    <li class="ui-field-contain ui-body ui-br ui-btn-up-c ui-corner-top" style="border: 1px solid #000;">
+                        <div class="ui-grid-d">
+                            <div class="ui-block-a" style="text-align: left; font-size: 8pt">
+                                </div>
+                            <div class="ui-block-b" style="text-align: center; font-size: 8pt">Loading...
+                                </div>
+                            <div class="ui-block-c" style="text-align: center; font-size: 8pt">
+                            </div>
+                            <div class="ui-block-d" style="text-align: center; font-size: 8pt">
+                            </div>
+                            <div class="ui-block-e" style="text-align: center; font-size: 8pt;">
+                                </div>
+                        </div>
+                        
+                        <!-- /grid-b -->
+                    </li>
+                </ul>
+            </div>
+            <br />
+             <br />
+        </div>
+</div>
+    
+    <!-- Start of Roster -->
+    <div data-role="page" data-title="TallyRec" id="teamRoster">
+                 
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="#teamMain" style="font-size: 8pt; border-radius: 15px;" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span2" class="SelectedTeamName">Roster</span></h1>
+        </div>
+        
+        <div data-role="content">
+            <div id="newRosterBtnDiv">
+                <button id="newRosterBtn" data-iconpos="center" data-mini="true" style="font-size: 6pt;">Add Player</button>
+            </div>
+            <div id="TeamRosterDiv">
+                <ul data-role='listview' data-inset='true'>
+                    <li data-role='list-divider'>
+                        <div class='ui-grid-a'>
+                        <div class='ui-block-a' style='text-align: left;'>Roster</div>
+                        </div>
+                    </li>
+                    <li class="ui-field-contain ui-body ui-br ui-btn-up-c ui-corner-top" style="text-align: center;font-size: 8pt; border: 1px solid #000;">
+                            Loading... <!-- This is where the content it pulled into -->
+                    </li>
+                </ul>
+            </div>
+            <br />
+             <br />
+        </div>
+        <!-- /content -->
+    </div>
+
+    <!-- Start of Team Settings -->
+    <div data-role="page" data-title="TallyRec" id="teamSettings">
+         
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="#teamMain" style="font-size: 8pt; border-radius: 15px;" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span4" class="SelectedTeamName">Team Settings</span></h1>
+        </div>
+        
+        <div data-role="content">
+            <a id="saveTeamSettings" data-role="button" data-mini="true">Save</a>
+            <form id="editteamsettingsform">
+                <div id="TeamHiddenSettings">
+                    <ul data-role="listview" data-inset="true">
+                        <li data-role="list-divider" style="border-bottom: 1px solid black;">Team Settings</li>
+                        <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Sport:</td>
+                                    <td id="availableSportsTwo">
+                                
+                                        <select name="settingsSport" id="settingsSport" data-mini="true">
+                                            <option value="1">Airsoft</option>
+                                            <option value="2">Baseball</option>
+                                            <option value="3">Basketball</option>
+                                            <option value="4">Cheerleading</option>
+                                            <option value="16">Dance</option>
+                                            <option value="5">Football</option>
+                                            <option value="19">Golf</option>
+                                            <option value="6">Hockey</option>
+                                            <option value="17">Kickball</option>
+                                            <option value="7">Lacrosse</option>
+                                            <option value="8">Paintball</option>
+                                            <option value="15">Racquetball</option>
+                                            <option value="9">Rugby</option>
+                                            <option value="10">Soccer</option>
+                                            <option value="11">Softball</option>
+                                            <option value="12">Tennis</option>
+                                            <option value="18">Track & Field</option>
+                                            <option value="13">Volleyball</option>
+                                            <option value="14">Wrestling</option>
+                                            <option value="100">Other</option>
+                                        </select>
+                                    
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Team Name:</td>
+                                    <td><input type="text" id="settingsName" data-mini="true" style="font-size:8pt; text-transform: capitalize;" /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">City:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt; text-transform: capitalize;" id="settingsCity"  /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">State:</td>
+                                    <td><input type="text" maxlength="2" name="test" style="font-size:8pt; text-transform: uppercase;" id="settingsState"  /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Home Park:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt; text-transform: capitalize;" id="settingsPark"  /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">League:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt; text-transform: capitalize;" id="settingsLeague"  /></td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+
+            <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider" style="border-bottom: 1px solid black;">Notification Settings</li>
+                    <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                        <div id="FollowNoteSettings">
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 50%;" data-inline="true">New Followers:</td>
+                                    <td>
+                                        
+                                            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                                <legend></legend>
+                                                    <input type="radio" name="followerNote" id="followerNoteYes" value="1" checked="checked">
+                                                    <label for="followerNoteYes">Yes</label>
+                                                    <input type="radio" name="followerNote" id="followerNoteNo" value="0">
+                                                    <label for="followerNoteNo">No</label>
+                                            </fieldset>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="chatNoteSettings">
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width:50%;">Team Chat:</td>
+                                    <td>
+                                        
+                                            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                                <legend></legend>
+                                                    <input type="radio" name="chatNote" id="chatNoteYes" value="1" checked="checked">
+                                                    <label for="chatNoteYes">Yes</label>
+                                                    <input type="radio" name="chatNote" id="chatNoteNo" value="0">
+                                                    <label for="chatNoteNo">No</label>
+                                            </fieldset>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <table style="width: 100%; font-size: 8pt;">
+                            <tr>
+                                <td style="width: 50%;">Team Messages:</td>
+                                <td>
+                                    
+                                        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                            <legend></legend>
+                                                <input type="radio" name="teamNote" id="teamNoteYes" value="1" checked="checked">
+                                                <label for="teamNoteYes">Yes</label>
+                                                <input type="radio" name="teamNote" id="teamNoteNo" value="0">
+                                                <label for="teamNoteNo">No</label>
+                                        </fieldset>
+                                    
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width:50%;">
+                            <a id="unarchiveteamBtn" data-role="button" data-mini="true">Un-Archive Team</a>
+                            <a id="archiveteamBtn" data-role="button" data-mini="true">Archive Team</a>
+                        </td>
+                        <td id="followdeleteBtn"><a id="deleteteamBtn" data-role="button" data-mini="true">Delete Team</a></td>
+                    </tr>
+                </table>
+            
+            
+            <br />
+             <br />
+        </div>
+        <!-- /content -->
+    </div>
+
+
+
+    <!-- Start of Edit Roster -->
+    <div data-role="page" data-title="TallyRec" id="teamEditRoster">
+        
+             <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="#teamRoster" id="BacktoRosterBtn" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span11" class="SelectedTeamName">Team Settings</span></h1>
+        </div>
+        <div data-role="content">
+            <a id="saveRosterBtn" data-role="button" data-mini="true">Save</a>
+            <form id="editdummyform">
+                <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all">
+                    <li data-role="list-divider" id="EditorCreate">Player</li>
+                    <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black;">
+                        <table style='width:100%;font-size:8pt;'>
+                            <tr>
+                                <td style='width:30%'>Jersey Number:</td>
+                                <td style='width:70%'><input id="selectedNumber" type="text" style="font-size: 8pt;" /></td>
+                            </tr>
+                        </table>
+                        <table style='width:100%;font-size:8pt;'>
+                            <tr>
+                                <td style='width:30%'>Name or Nickname:</td>
+                                <td style='width:70%'><input id="selectedName" type="text" style="font-size: 8pt;" /></td>
+                            </tr>
+                        </table>
+                        <div id='dummyphonenumber'>
+                            <table style='width:100%;font-size:8pt;'>
+                                <tr>
+                                    <td style='width:30%'>Phone Number:</td>
+                                    <td style='width:70%'><input id="selectedPhoneNumber" type="text" style="font-size: 8pt;" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="teamManagerOption">
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 60%;">Team Manager:</td>
+                                    <td id="teamManagerSelectedOption">
+                                        <div data-role="fieldcontain">
+                                            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                                <legend></legend>
+                                                    <input type="radio" name="teamManager" id="teamManagerYes" value="1">
+                                                    <label for="teamManagerYes">Yes</label>
+                                                    <input type="radio" name="teamManager" id="teamManagerNo" value="0">
+                                                    <label for="teamManagerNo">No</label>
+                                            </fieldset>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 50%;"><a id="deleteplayer" data-role="button" data-mini="true">Delete Player</a></td>
+                    <td><a href="tel:" id="callplayerBtn" data-role="button" data-mini="true">Call Player</a></td>
+                </tr>
+            </table>
+            
+            
+            <br />
+             <br />
+        </div>
+        <!-- /content -->
+    </div>
+
+    <!-- Start of Edit Roster -->
+    <div data-role="page" id="AddPersonToRoster">
+                <!-- Header -->
+        <div data-role="header" data-title="TallyRec" data-id="headSturdy" data-position="fixed">
+            <a href="#teamRoster" style="font-size: 8pt; border-radius: 15px;" id="A2" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span1" class="SelectedTeamName"></span></h1>
+        </div>
+
+        <div data-role="content">
+            <form id="createdummyform">
+                <div data-role="collapsible"  data-iconpos="right" data-mini="true" data-icon="arrow-d" data-collapsed="false">
+                    <h3 style="text-align: center;">Create Player</h3>
+                    <table style="width: 100%; font-size: 10pt; padding: 5px; color: #3f576e; background-color: #fff; border: 1px solid black; border-radius: 15px;">
+                        <tr>
+                            <td>Jersey Number:</td>
+                            <td><input id="DummyRosterNumber" type="text" style="font-size: 8pt;" /></td>
+                        </tr>
+                        <tr>
+                            <td>First Name:</td>
+                            <td><input id="DummyFname" type="text" style="font-size: 8pt;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Last Name:</td>
+                            <td><input id="DummyLname" type="text" style="font-size: 8pt;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Phone Number:</td>
+                            <td><input id="DummyPhone" type="text" style="font-size: 8pt;" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"> <a id="AddDummyPlayer" data-role="button" data-mini="true">Create</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+
+            <div id="teamFollowersDiv">
+                 <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">Followers</li>
+                    <li class="ui-field-contain ui-body ui-br ui-btn-up-c ui-corner-top" style="text-align: center;font-size: 8pt; border: 1px solid #000;">
+                            Loading...
+                    </li>
+                 </ul>
+            </div>
+            <br />
+             <br />
+        </div><!-- /content -->
+       </div><!-- /page -->
+            
+
+    <!-- Game Edit Start -->
+    <div data-role="page" data-title="TallyRec" id="teamEditSchedule">
+             
+        <!-- Header -->
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="#teamSchedule" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span6" class="SelectedTeamName"></span></h1> 
+        </div>
+
+        <!-- Content -->
+        <div data-role="content">
+            <a id="saveGameBtn" data-role="button" data-mini="true">Save</a>
+            <!-- Game Edit -->
+            <form id="editscheduleform">
+                <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all">
+                    <li data-role="list-divider">Edit</li>
+                    <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid #000;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 25%; font-size: 8pt;">
+                                    Event Type:
+                                </td>
+                                <td style="width: 75%;" id="eventTypeDiv">
+                                    <select id="eventType" data-mini="true" style="font-size: 8pt;"data-type="horizontal">
+                                        <option value="game">Game</option>
+                                        <option value="practice">Practice</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <div id="homeawayDiv">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="width: 25%; font-size: 8pt;">
+                                        Home / Away:
+                                    </td>
+                                    <td style="width: 75%;" id="GameHomeAwayDD">
+                                        <select id="GameHomeAway" data-mini="true" style="font-size: 8pt;"data-type="horizontal">
+                                            <option value="1">Home</option>
+                                            <option value="0">Away</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div id="opponentDiv">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="width: 25%; font-size: 8pt;" id="opptext">
+                                        Opponent:
+                                    </td>
+                                    <td>
+                                        <input type="text" id="GameOpponent" style="font-size: 8pt; text-transform: capitalize;" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 25%; font-size: 8pt;">
+                                    Date:
+                                </td>
+                                <td>
+                                     <!--<input type="text" data-clear-btn="true" name="date-2" data-mini="true" id="GameDate" value="">-->
+                                     <input type="text" id="GameDate" readonly="true" style="font-size: 8pt;" /> 
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 25%; font-size: 8pt;">
+                                    Time:
+                                </td>
+                                <td>
+                                    <input type="text" id="GameTime" style="font-size: 8pt;" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 25%; font-size: 8pt;">
+                                    Park:
+                                </td>
+                                <td>
+                                    <input type="text" id="GamePark" style="font-size: 8pt;;" />
+                                </td>
+                            </tr>
+                        </table> 
+
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 25%; font-size: 8pt;">
+                                    City:
+                                </td>
+                                <td>
+                                <input type="text" id="GameCity" style="font-size: 8pt;" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 25%; font-size: 8pt;">
+                                    State:
+                                </td>
+                                <td>
+                                    <input type="text" id="GameState" maxlength="2" style="font-size: 8pt;" />
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </form>
+
+            <!-- Game Score -->
+            <div id="scoreDiv">
+                <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all">
+                    <li data-role="list-divider">Score</li>
+                    <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c"  style="border: 1px solid #000;">
+                        <table style="width: 100%;">
+                                <tr>
+                                    <td id="AwayScoreTeam" style="width: 75%; font-size: 8pt;">
+                                       Away Score:
+                                    </td>
+                                    <td>
+                                        <input type="text" id="GameAwayScore" style="font-size: 8pt; text-align: center;" />
+                                    </td>
+                                </tr>
+                            </table>
+                    </li>
+                    <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid #000; border-top: none;">
+                        <table style="width: 100%;">
+                                <tr>
+                                    <td id="HomeScoreTeam" style="width: 75%; font-size: 8pt;">
+                                    Home Score:
+                                    </td>
+                                    <td>
+                                        <input type="text" id="GameHomeScore" style="font-size: 8pt; text-align: center;" />
+                                    </td>
+                                </tr>
+                            </table>
+                    </li>
+                </ul>
+            </div>
+
+            <a id="deleteGameBtn" data-role="button">Delete Event</a>
+            <br />
+             <br />
+        </div>
+        <!-- /content -->
+    </div>
+
+    <!-- Start of Team Statistics -->
+    <div data-role="page" id="teamStatistics">
+             <!-- Header -->
+        <div data-role="header" data-title="TallyRec" data-id="headSturdy" data-position="fixed">
+            <a href="#teamMain" style="font-size: 8pt; border-radius: 15px;" id="A3" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span5" class="SelectedTeamName"></span></h1>
+        </div>
+
+        <!-- Content -->
+        <div data-role="content">
+        <div id="getTeamStats">
+        <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all">
+            <li data-role="list-divider" style="text-align: center; border-bottom: 1px solid black;">Overall Team Statistics</li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%;">
+                    <tr>
+                        <td class="StatsTblCells">Overall Record:</td>
+                        <td class="StatsTblCells" id="teamWLT">Loading...</td>
+                    </tr>
+                </table>   
+            </li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 50%; font-weight: bold;">Current Streak:</td>
+                        <td style="width: 50%;" id="teamOverallStreak"></td>
+                    </tr>
+                </table>
+            </li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 50%; font-weight: bold;">Total Followers:</td>
+                        <td style="width: 50%;" id="teamOverallFollowers"></td>
+                    </tr>
+                </table>
+            </li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 25%; font-weight: bold;">PF</td>
+                        <td style="width: 25%; font-weight: bold;">PA</td>
+                        <td style="width: 25%; font-weight: bold;">AVG PF</td>
+                        <td style="width: 25%; font-weight: bold;">AVG PA</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;" id="teamOverallPF"></td>
+                        <td style="width: 25%;" id="teamOverallPA"></td>
+                        <td style="width: 25%;" id="teamOverallPFAVG"></td>
+                        <td style="width: 25%;" id="teamOverallPAAVG"></td>
+                    </tr>
+                </table>
+            </li>
+        </ul>
+
+        <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all">
+            <li data-role="list-divider" style="text-align: center; border-bottom: 1px solid black;">Home Statistics</li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 50%; font-weight: bold;">Home Record:</td>
+                        <td style="width: 50%;" id="teamHomeWLT">Loading...</td>
+                    </tr>
+                </table>
+            </li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 50%; font-weight: bold;">Current Streak:</td>
+                        <td style="width: 50%;" id="teamHomeStreak"></td>
+                    </tr>
+                </table>
+            </li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 25%; font-weight: bold;">PF</td>
+                        <td style="width: 25%; font-weight: bold;">PA</td>
+                        <td style="width: 25%; font-weight: bold;">AVG PF</td>
+                        <td style="width: 25%; font-weight: bold;">AVG PA</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;" id="teamHomePF"></td>
+                        <td style="width: 25%;" id="teamHomePA"></td>
+                        <td style="width: 25%;" id="teamHomePFAVG"></td>
+                        <td style="width: 25%;" id="teamHomePAAVG"></td>
+                    </tr>
+                </table>
+            </li>
+        </ul>
+
+        <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all">
+            <li data-role="list-divider" style="text-align: center; border-bottom: 1px solid black;">Away Statistics</li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 50%; font-weight: bold;">Away Record:</td>
+                        <td style="width: 50%;" id="teamAwayWLT">Loading...</td>
+                    </tr>
+                </table>
+            </li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 50%; font-weight: bold;">Current Streak:</td>
+                        <td style="width: 50%;" id="teamAwayStreak"></td>
+                    </tr>
+                </table>
+            </li>
+            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c" style="border: 1px solid black; border-top: none;">
+                <table style="width: 100%; text-align: center;  font-size: 8pt;">
+                    <tr>
+                        <td style="width: 25%; font-weight: bold;">PF</td>
+                        <td style="width: 25%; font-weight: bold;">PA</td>
+                        <td style="width: 25%; font-weight: bold;">AVG PF</td>
+                        <td style="width: 25%; font-weight: bold;">AVG PA</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;" id="teamAwayPF"></td>
+                        <td style="width: 25%;" id="teamAwayPA"></td>
+                        <td style="width: 25%;" id="teamAwayPFAVG"></td>
+                        <td style="width: 25%;" id="teamAwayPAAVG"></td>
+                    </tr>
+                </table>
+            </li>
+            </ul>
+        </div>
+        </div><!-- /content -->
+    </div>
+
+    <!--
+    *
+    *
+    *   Start of League
+    *
+    *
+    -->
+
+    <!-- Start of League Main -->
+    <div data-role="page" data-title="TallyRec" id="leagueMain">
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="console.html" style="font-size: 8pt; border-radius: 15px;" rel="external" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="span7" class="SelectedTeamName">League Name</span></h1>
+        </div>
+        
+        <!-- Main Team Information Div -->
+        <div data-role="content"> 
+            <table style="width:100%; font-size: 8pt; padding: 0;">
+                <tr>
+                    <td style="width:45%; text-align: center;"> 
+                        <div id="leagueSportImageDiv">Loading... </div>
+                    </td>
+                    <td style="width: 55%;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 100%; text-align: center;">
+                                    <div id="leagueEventsTodayDiv">
+                                        <ul data-role="listview" data-inset="true">
+                                            <li data-role="list-divider" style="text-align: center; font-size: 8pt;">Today's Events</li>
+                                            <li style="text-align: center; font-size: 8pt;">
+                                                Loading...
+                                            </li>
+                                         </ul>
+                                    </div>
+                                    <div id="Div1">
+                                         <ul data-role="listview" data-inset="true">
+                                            <li data-role="list-divider" style="text-align: center; font-size: 8pt;">Standings</li>
+                                            <li style="text-align: center; font-size: 8pt;">
+                                                Loading...
+                                            </li>
+                                         </ul>
+                                    </div>
+                                 </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <!-- Team Message -->
+                    <!-- Team Message -->
+                    <td colspan="2" style="width: 100%;" id="leagueNote">
+                        <ul data-role="listview" data-inset="true">
+                            <li data-role="list-divider" style="text-align: left; font-size: 8pt;">League Message</li>
+                            <li style='font-size: 8pt;'>Loading...</li>
+                        </ul>
+                    </td>
+                     <!-- Team Message END -->
+                     <!-- Team Message END -->
+
+                </tr>
+            </table>
+
+            <!-- Team Navigation -->
+
+            <table style="width: 100%; margin: auto;font-size: 8pt;">
+                <tr> 
+                    <td class="navIcons" style="width:47%;">
+                        <a href="#leagueSchedule" style="text-decoration: none; color: White;">
+                            <div style="height:100%;width:100%">
+                                <img alt="" src="images/navIcons/IconSchedule.png" class="navIconImg"/>Schedule
+                            </div>    
+                        </a>
+                    </td>
+                    <td style="width: 6%;">&nbsp;</td>
+                    <td class="navIcons" style="width:47%;">
+                        <a href="#leagueRoster" style="text-decoration: none; color: White;">
+                            <div style="height:100%;width:100%">
+                                <img alt="" src="images/navIcons/IconRoster.png" class="navIconImg"/>Teams
+                            </div>    
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="navIcons">
+                        <a href="#leagueChat" style="text-decoration: none; color: White;">
+                            <div style="height:100%;width:100%">
+                                <img alt="" src="images/navIcons/IconChat.png" class="navIconImg"/>Chat
+                            </div>    
+                        </a>
+                    </td> 
+                    <td style="width: 6%;">&nbsp;</td>
+                    <td class="navIcons" >
+                        <a href="#leagueStatistics" style="text-decoration: none; color: White;">
+                            <div style="height:100%;width:100%">
+                                <img alt="" src="images/navIcons/IconStats.png" class="navIconImg"/>Standings
+                            </div>    
+                        </a>
+                    </td>   
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="navIcons">
+                        <a href="#leagueSettings" style="text-decoration: none; color: White;">
+                            <div style="height:100%;width:100%">
+                                <img alt="" src="images/navIcons/IconInfo.png" class="navIconImg"/>Info
+                            </div>    
+                        </a>
+                    </td>
+                    <td style="width: 6%;">&nbsp;</td>
+                    <td class="navIcons">
+                        <a href="#leagueSettings" style="text-decoration: none; color: White;">
+                            <div style="height:100%;width:100%">
+                                <img alt="" src="images/navIcons/IconSettings.png" class="navIconImg"/>Settings
+                            </div>    
+                        </a>
+                    </td>
+
+                </tr>
+            </table>
+            <!-- Team Navigation END -->
+            <br />
+             <br />
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- League Main END -->
+
+    <!-- Start of League Schedule -->
+    <div data-role="page" data-title="TallyRec" id="leagueSchedule">
+        
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="#leagueMain" style="font-size: 8pt; border-radius: 15px;" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span8" class="SelectedTeamName">Schedule</span></h1>
+        </div>
+
+        <div data-role="content">
+                    
+            <div id="addLeagueEventBtnDiv">
+                <button id="addLeagueEventBtn"  data-iconpos="center" style="font-size: 6pt;">Add Event</button>
+            </div>
+            
+            <div id="leagueScheduleDiv">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">
+                        <div class="ui-grid-c">
+                            <div class="ui-block-a" style="text-align: left;">
+                                </div>
+                            <div class="ui-block-b" style="text-align: right;">
+                                </div>
+                            <div class="ui-block-c" style="text-align: right;"></div>
+                            <div class="ui-block-d" style="text-align: right;"></div>
+                        </div>
+                    </li>
+                    <li class="ui-field-contain ui-body ui-br ui-btn-up-c ui-corner-top">
+                        <div class="ui-grid-d">
+                            <div class="ui-block-a" style="text-align: left; font-size: 8pt">
+                                </div>
+                            <div class="ui-block-b" style="text-align: center; font-size: 8pt">Loading...
+                                </div>
+                            <div class="ui-block-c" style="text-align: center; font-size: 8pt">
+                            </div>
+                            <div class="ui-block-d" style="text-align: center; font-size: 8pt">
+                            </div>
+                            <div class="ui-block-e" style="text-align: center; font-size: 8pt;">
+                                </div>
+                        </div>
+                        
+                        <!-- /grid-b -->
+                    </li>
+                </ul>
+            </div>
+            <br />
+             <br />
+        </div>
+    </div>
+    <!-- League Schedule END -->
+    
+    <!-- Start of League Roster -->
+    <div data-role="page" data-title="TallyRec" id="leagueRoster">
+                 
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="#leagueMain" style="font-size: 8pt; border-radius: 15px;" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span9" class="SelectedTeamName">Roster</span></h1>
+        </div>
+        
+        <div data-role="content">
+            <div id="addTeamLeagueDiv">
+                <form id="leagueCreateTeamForm">
+                    <div data-role="collapsible"  data-iconpos="right" data-mini="true" data-icon="arrow-d">
+                        <h3 style="text-align: center;">Create Team</h3>
+                        <table style="width: 100%; font-size: 10pt; padding: 5px; background: #3f576e; border: 1px solid black; border-radius: 15px;">
+                            <tr>
+                                <td>Team Name:</td>
+                                <td><input id="leagueCreateTeamName" type="text" style="font-size: 8pt;" /></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <a id="leagueCreateTeam" data-role="button" data-mini="true">Create</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div id="leagueRosterDiv">
+                <ul data-role='listview' data-inset='true'>
+                    <li data-role='list-divider'>
+                        <div class='ui-grid-a'>
+                        <div class='ui-block-a' style='text-align: left;'>Roster</div>
+                        </div>
+                    </li>
+                    <li class="ui-field-contain ui-body ui-br ui-btn-up-c ui-corner-top" style="text-align: center;font-size: 8pt;">
+                            Loading... <!-- This is where the content it pulled into -->
+                    </li>
+                </ul>
+            </div>
+            <br />
+             <br />
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- League Roster END -->
+
+    <!-- Start of League Statistics -->
+    <div data-role="page" id="leagueStatistics">
+             <!-- Header -->
+        <div data-role="header" data-title="TallyRec" data-id="headSturdy" data-position="fixed">
+            <a href="#leagueMain" style="font-size: 8pt; border-radius: 15px;" id="A1" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span10" class="SelectedTeamName"></span></h1>
+        </div>
+
+        <!-- Content -->
+        <div data-role="content">
+        <div id="Div5">
+            League Statistics
+        </div>
+        </div><!-- /content -->
+    </div>
+    <!-- League Stats END -->
+
+
+    <!-- Start of League Chat -->
+    <div data-role="page" data-title="TallyRec" id="leagueChat">
+        <!-- Header -->
+        <div data-role="header" data-position="fixed" id="Div10" data-id="headSturdy">
+            <a style="font-size: 8pt; border-radius: 15px;" href="#leagueMain" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span13" class="SelectedTeamName"></span></h1>
+        </div>
+         
+        <!-- Content -->
+        <div data-role="content">
+            <ul data-role="listview" data-inset="false">
+                <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 90%;">
+                                    <form id="sendleaguechatform">
+                                        <textarea style="min-width: 95%;" id="LeagueChatMessageInput" rows="1" class="SubmitMsgTxt" data-mini="true" maxlength="250" placeholder="Enter text here.."></textarea>
+                                    </form>
+                                </td>
+                                <td style="width: 10%;">
+                                    <div id="Div2">
+                                        <button id="sendLeagueChatBtn" data-mini="true">Send</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                </li>
+             </ul>
+             <br />
+             <br />
+            <!-- Chat Container -->
+            <div id="leagueChatMessages">
+                <p>There are no messages at this time.</p>
+            </div>
+            <br />
+             <br />
+        </div>
+    </div>
+    <!-- League Chat END -->
+
+    <!-- Start of League Settings -->
+    <div data-role="page" data-title="TallyRec" id="leagueSettings">
+         
+        <div data-role="header" data-id="headSturdy" data-position="fixed">
+            <a href="#leagueMain" style="font-size: 8pt; border-radius: 15px;" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+            <h1><span id="Span12" class="SelectedTeamName">League Settings</span></h1>
+        </div>
+        
+        <div data-role="content">
+            <form id="Form2">
+                <div id="Div12">
+                    <a id="saveLeagueSettings" data-role="button">Save Settings</a>
+
+                    <ul data-role="listview" data-inset="true">
+                        <li data-role="list-divider">League Settings</li>
+                        <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c ui-corner-top">
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">League Name:</td>
+                                    <td><input type="text" id="leaguesettingsName" data-mini="true" style="font-size:8pt; text-transform: capitalize;" /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Sport:</td>
+                                    <td id="Td3">
+                                
+                                        <select name="settingsSport" id="leaguesettingSport" data-mini="true">
+                                            <option value="1">Airsoft</option>
+                                            <option value="2">Baseball</option>
+                                            <option value="3">Basketball</option>
+                                            <option value="4">Cheerleading</option>
+                                            <option value="16">Dance</option>
+                                            <option value="5">Football</option>
+                                            <option value="19">Golf</option>
+                                            <option value="6">Hockey</option>
+                                            <option value="17">Kickball</option>
+                                            <option value="7">Lacrosse</option>
+                                            <option value="8">Paintball</option>
+                                            <option value="15">Racquetball</option>
+                                            <option value="9">Rugby</option>
+                                            <option value="10">Soccer</option>
+                                            <option value="11">Softball</option>
+                                            <option value="12">Tennis</option>
+                                            <option value="18">Track & Field</option>
+                                            <option value="13">Volleyball</option>
+                                            <option value="14">Wrestling</option>
+                                            <option value="100">Other</option>
+                                        </select>
+                                    
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Division:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt; text-transform: capitalize;" id="leaguesettingsDivision"  /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">City:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt; text-transform: capitalize;" id="leaguesettingsCity"  /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">State:</td>
+                                    <td><input type="text" maxlength="2" name="test" style="font-size:8pt; text-transform: uppercase;" id="leaguesettingsState"  /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Park:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt; text-transform: capitalize;" id="leaguesettingsPark"  /></td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Season:</td>
+                                    <td>
+                                        <select name="leagueSeasonSettings" id="leaguesettingsSeason" data-mini="true">
+                                        <option value="1">Spring</option>
+                                        <option value="2">Summer</option>
+                                        <option value="3">Fall</option>
+                                        <option value="4">Winter</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 33%;">Year:</td>
+                                    <td><input type="text" name="test" style="font-size:8pt; text-transform: capitalize;" id="leaguesettingsYear"  /></td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+
+            <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">Notification Settings</li>
+                    <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c ui-corner-top">
+                        <div id="">
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width: 50%;">New Followers:</td>
+                                    <td>
+                                        <div data-role="fieldcontain">
+                                            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                                <legend></legend>
+                                                    <input type="radio" name="leaguefollowerNote" id="leaguefollowerNoteYes" value="1" checked="checked">
+                                                    <label for="leaguefollowerNoteYes">Yes</label>
+                                                    <input type="radio" name="leaguefollowerNote" id="leaguefollowerNoteNo" value="0">
+                                                    <label for="leaguefollowerNoteNo">No</label>
+                                            </fieldset>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="Div14">
+                            <table style="width: 100%; font-size: 8pt;">
+                                <tr>
+                                    <td style="width:50%;">League Chat:</td>
+                                    <td>
+                                        <div data-role="fieldcontain">
+                                            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                                <legend></legend>
+                                                    <input type="radio" name="leaguechatNote" id="leaguechatNoteYes" value="1" checked="checked">
+                                                    <label for="leaguechatNoteYes">Yes</label>
+                                                    <input type="radio" name="leaguechatNote" id="leaguechatNoteNo" value="0">
+                                                    <label for="leaguechatNoteNo">No</label>
+                                            </fieldset>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <table style="width: 100%; font-size: 8pt;">
+                            <tr>
+                                <td style="width: 50%;">League Messages:</td>
+                                <td>
+                                    <div data-role="fieldcontain">
+                                        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                            <legend></legend>
+                                                <input type="radio" name="leagueNote" id="leagueNoteYes" value="1" checked="checked">
+                                                <label for="leagueNoteYes">Yes</label>
+                                                <input type="radio" name="leagueNote" id="leagueNoteNo" value="0">
+                                                <label for="leagueNoteNo">No</label>
+                                        </fieldset>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+
+            <a id="archiveleagueBtn" data-role="button">Archive League</a> 
+            <a id="deleteleagueBtn" data-role="button">Delete League</a>
+            <br />
+             <br />
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- League Settings END -->
+
+       <!--Edit League Schedule -->
+        <div data-role="page" data-title="TallyRec" id="leagueEditSchedule">
+             
+            <!-- Header -->
+            <div data-role="header" data-id="headSturdy" data-position="fixed">
+                <a href="#leagueSchedule" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+                <h1><span id="Span15" class="SelectedTeamName"></span></h1>
+            </div>
+
+            <!-- Content -->
+            <div data-role="content">
+
+                    <!-- Game Edit -->
+                    <form id="leagueEventForm">
+                        <ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all">
+                            <li data-role="list-divider">Edit Event</li>
+                            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c ui-corner-top">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 25%; font-size: 8pt;">
+                                            Event Type:
+                                        </td>
+                                        <td style="width: 75%;" id="leagueEventTypeDiv">
+                                            <select id="leagueEventType" data-mini="true" style="font-size: 8pt;">
+                                                <option value="game">Game</option>
+                                                <option value="practice">Practice</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </li>
+                            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c ui-corner-top">
+                                <div id="leagueEventOption" style="display:none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 25%; font-size: 8pt;">
+                                                Event Name:
+                                            </td>
+                                            <td style="width: 75%;">
+                                                <input type="text" id="leagueEventName" style="font-size: 8pt;" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 25%; font-size: 8pt;">
+                                                For:
+                                            </td>
+                                            <td style="width: 75%;" id="leagueallteamsDDL">
+                                                Loading...
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="leaguePracticeOption" style="display:none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 25%; font-size: 8pt;">
+                                                For:
+                                            </td>
+                                            <td style="width: 75%;" id="leaguepracticeteamsDDL">
+                                                Loading...
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="leagueGameOption">
+                                    <table style="width:100%;font-size:8pt;text-align:center;">
+                                        <tr>
+                                            <td style="width:45%;">Away Team</td>
+                                            <td style="width:10%;">&nbsp;</td>
+                                            <td style="width:45%;">Home Team</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="leagueawayteamDDL">
+                                                <select id="leagueawayteam" data-mini="true" style="font-size:8pt;">
+                                                    <option>Loading...</option>
+                                                </select>
+                                            </td>
+                                            <td>@</td>
+                                            <td id="leaguehometeamDDL">
+                                                <select id="leaguehometeam" data-mini="true" style="font-size:8pt;">
+                                                    <option>Loading...</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" id="leagueGameAwayScore" style="font-size: 8pt; text-align: center;" />
+                                            </td>
+                                            <td>Score</td>
+                                            <td>
+                                                <input type="text" id="leagueGameHomeScore" style="font-size: 8pt; text-align: center;" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </li>
+                            <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br ui-li ui-li-static ui-btn-up-c ui-corner-top">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 25%; font-size: 8pt;">
+                                            Date:
+                                        </td>
+                                        <td>
+                                            <input type="text" id="LeagueGameDate" readonly="true" style="font-size: 8pt;" />
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 25%; font-size: 8pt;">
+                                            Time:
+                                        </td>
+                                        <td>
+                                            <input type="text" id="leagueGameTime" style="font-size: 8pt;" />
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 25%; font-size: 8pt;">
+                                            Park:
+                                        </td>
+                                        <td>
+                                            <input type="text" id="leagueGamePark" style="font-size: 8pt; text-transform: capitalize;" />
+                                        </td>
+                                    </tr>
+                                </table> 
+
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 25%; font-size: 8pt;">
+                                            City:
+                                        </td>
+                                        <td>
+                                        <input type="text" id="leagueGameCity" style="font-size: 8pt; text-transform: capitalize;" />
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 25%; font-size: 8pt;">
+                                            State:
+                                        </td>
+                                        <td>
+                                            <input type="text" id="leagueGameState" maxlength="2" style="font-size: 8pt; text-transform: uppercase;" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </li>
+                        </ul>
+                    </form>
+                    <a id="leagueSaveGameBtn" data-role="button">Save</a>
+                    <a id="leagueDeleteGameBtn" data-role="button" style="display:none;">Delete</a>
+                    <br />
+                     <br />
+                </div>            
+            </div>
+            <!-- Edit League Schedule END -->
+
+            <!-- 
+            *
+            *   Messages
+            *
+            -->
+
+            <!-- My Messages -->
+            <div data-role="page" data-title="TallyRec" id="myMessages">
+             
+                <!-- Messages Panel -->
+                <div data-role="panel"  id="mymessagespanel" data-position="left" data-display="push" style="background:#3f576e;">
+            
+                        <div style="width:100%;">
+                            <ul data-role="listview">
+                                <li>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <input type="search" id="messagesPanelSearchField" value="" data-mini="true" placeholder="Search Teams">
+                                            </td>
+                                            <td><a id="messagesPanelSearchBtn" data-role="button" data-mini="true" >Go</a></td>
+                                        </tr>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="messagesPanelMyName">
+                            <ul data-role="listview">
+                                <li>
+                                    <a href="#console"><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul data-role="listview">
+                                <li data-role="list-divider">Favorites</li>
+                                <li>
+                                     <a href="#PendingRequests">Notifications<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelNotifications">0</span></a>
+                                </li>
+                                <li>
+                                    <a href="#myMessages">Messages<span class="ui-li-count ui-btn-up-c ui-btn-corner-all consolePanelMessages">0</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="myMessagesPanelMyTeamsDiv">
+                            <ul data-role="listview">
+                                <li data-role="list-divider">My Teams</li>
+                                <li>
+                                    <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="myMessagesPanelFollowingTeamsDiv">
+                            <ul data-role="listview">
+                                <li data-role="list-divider">Following</li>
+                                <li>
+                                    <a href=""><img src="" alt="" class="ui-li-icon" />Loading...</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                        <ul data-role="listview">
+                            <li data-role="list-divider">Main Console</li>
+                            <li>
+                                <a href="#createteam">Create Team</a>
+                            </li>
+                            <li>
+                                <a href="#pastteams">Past Teams</a>
+                            </li>
+                            <li>
+                                <a href="#settings">Settings</a>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+
+                <!-- Header -->
+                <div data-role="header" data-id="headSturdy" data-position="fixed">
+                    <a id="mymessagespanelOpenClose" data-role="button" data-icon="bars">Menu</a>
+                    <h1><span id="Span16">Messages</span></h1>
+                </div>
+
+                <!-- Content -->
+                <div data-role="content">
+                    <a id="composeMessageDiv" data-role="button">New</a>
+                    <div id="myMessageContactsDiv">
+                        <table style="width:95%;margin:auto;">
+                            <tr>
+                                <td style="width:30%;">
+                                    <img src="" class="messagePic" alt="Profile Pic" />
+                                </td>
+                                <td style="width:50%;">
+                                    Name
+                                    <br />
+                                    Message
+                                </td>
+                                <td style="width:20%;">
+                                    Time/Date
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- <div id="composeMessageDiv"></div> -->
+
+                </div>            
+
+            </div>
+            <!-- My Messages END -->
+
+            <!-- Compose Messages -->
+            <div data-role="page" data-title="TallyRec" id="composeMessage">
+             
+                <!-- Header -->
+                <div data-role="header" data-id="headSturdy" data-position="fixed">
+                    <a href="#myMessages" data-role="button" data-icon="arrow-l" data-iconpos="left">Back</a>
+                    <h1><span id="convoName">New Message</span></h1>
+                </div>
+
+                <!-- Content -->
+                <div data-role="content">
+                    <form id="sendContactMessageForm">
+                    <ul data-role="listview" data-inset="false">
+                        <li data-role="fieldcontain" class="ui-field-contain ui-body ui-br -ui-btn-up-c" style="background: #3f576e; border-bottom: 1px solid black;">
+                            <div id="messageSuggestionsDiv">
+                                Loading...
+                            </div>  
+                            <table style="width:100%;margin:auto;">
+                                <tr style="vertical-align:top;">
+                                    <td><textarea id="sendContactMessagText" maxlength="250" style="background: #3f576e;" placeholder="What's your message?"></textarea></td>
+                                    <td><a id="sendContactMessageBtn" data-role="button">Send</a></td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                    </form>
+                    <br />
+                    <div id="myConvoDiv"></div>
+
+                </div>            
+
+            </div>
+            <!-- Compose Message END -->
+
+            <!-- MyConvo -->
+            <div data-role="page" data-title="TallyRec" id="myConvo">
+             
+                <!-- Header -->
+                <div data-role="header" data-id="headSturdy" data-position="fixed">
+                    <a href="#myMessages" data-role="button" data-icon="arrow-l" data-iconpos="left">Cancel</a>
+                    <h1><span id="Span20">New Message</span></h1>
+                </div>
+
+                <!-- Content -->
+                <div data-role="content">
+                    
+                    <div id="Div4">
+                        <table style="width:95%;margin:auto;">
+                            <tr>
+                                <td style="width:25%;">O</td>
+                                <td style="width:25%;"><img src="" class="messagePic" alt="Profile Pic" /></td>
+                                <td style="width:50%;">Name</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <form id="Form1">
+                        <table style="width:95%;margin:auto;">
+                            <tr>
+                                <td><input type="text" id="Text1" placeholder="What's your message?" /></td>
+                                <td><a id="A4" data-role="button">Send</a></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>            
+
+            </div>
+            <!-- MyConvo END -->
+
+</body>
+</html>

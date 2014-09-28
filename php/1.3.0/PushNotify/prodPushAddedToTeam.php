@@ -1,0 +1,145 @@
+<?php
+
+// Put your device token here (without spaces):
+// Robert $deviceToken = '7d3985ba7538eefb18308d8db4c24edc091dec70a2186614618f963c5bcb861b';
+//Thomas $deviceToken = '5a0691795d018b4e3f2d70e939fc3abbb79f8465689db69df6bec6f1da9207a8';
+
+ob_start();
+
+require("constants.php");
+$tbl_name="notes"; // Table name 
+
+// Load  Variables
+$rosterid = $_REQUEST['rosterid'];
+$message = $_REQUEST['message'];
+
+$rosterid = stripslashes($rosterid);
+$rosterid = mysqli_real_escape_string($rosterid);
+
+//Check for selected userid
+$sql="SELECT UserID FROM roster WHERE RosterID='$rosterid'";
+$result=mysqli_query($sql);
+$row = mysqli_fetch_assoc($result);
+$userid = $row['UserID'];
+
+//Get Total Number of Notifications
+$sql="SELECT * FROM $tbl_name WHERE (UserID = '$userid') AND (Active = '1')";
+$result = mysqli_query($sql);    
+// mysqli_num_row is counting table row
+$count=mysqli_num_rows($result);
+$badgenum = $count;
+
+//Get token and Device type
+$sql="SELECT Token, TokenDevice FROM user WHERE (UserID = '$userid')";
+$result = mysqli_query($sql);    
+$row = mysqli_fetch_assoc($result);
+$token = $row["Token"];
+$tokenDevice = $row["TokenDevice"];
+
+
+    if ($tokenDevice == "ios") {
+        //ios
+        
+        $deviceToken = $token;
+
+        // Put your private key's passphrase here:
+        $passphrase = 'accent5050';
+
+        // Put your alert message here:
+        $message = $message;
+
+        ////////////////////////////////////////////////////////////////////////////////
+
+        $ctx = stream_context_create();
+        stream_context_set_option($ctx, 'ssl', 'local_cert', 'ckprod.pem');
+        stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
+
+        // Open a connection to the APNS server
+        $fp = stream_socket_client(
+	        'ssl://gateway.push.apple.com:2195', $err,
+	        $errstr, 60, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $ctx);
+
+        if (!$fp)
+	        exit("Failed to connect: $err $errstr" . PHP_EOL);
+
+        echo 'Connected to APNS' . PHP_EOL;
+
+        // Create the payload body
+        $body['aps'] = array(
+	        'alert' => $message,
+            'badge' => $badgenum,
+	        'sound' => 'default'
+	        );
+
+        // Encode the payload as JSON
+        $payload = json_encode($body);
+
+        // Build the binary notification
+        $msg = chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
+
+        // Send it to the server
+        $result = fwrite($fp, $msg, strlen($msg));
+
+        if (!$result)
+	        echo 'Message not delivered' . PHP_EOL;
+        else
+	        echo 'Message successfully delivered' . PHP_EOL;
+
+        // Close the connection to the server
+        fclose($fp);
+    
+    }
+    else if ($tokenDevice == "android"){
+    //Android
+    
+             // Replace with real server API key from Google APIs        
+             $apiKey = "AIzaSyDwfHou92fGAMUnRj-jTGOX2beNQfUq1MA";
+
+             // Replace with real client registration IDs
+             $registrationIDs = array( $token );
+
+             // Message to be sent
+             $title = "TallyRec";
+             $message = $message;
+
+             // Set POST variables
+             $url = 'https://android.googleapis.com/gcm/send';
+
+             $fields = array(
+                 'registration_ids' => $registrationIDs,
+                 'data' => array(    
+                                 "message" => $message, 
+                                 "title" => $title
+                                 ),
+             );
+
+             $headers = array(
+                 'Authorization: key=' . $apiKey,
+                 'Content-Type: application/json'
+             );
+
+             // Open connection
+             $ch = curl_init();
+
+             // Set the url, number of POST vars, POST data
+             curl_setopt($ch, CURLOPT_URL, $url );
+             curl_setopt($ch, CURLOPT_POST, true );
+             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode( $fields ));
+
+             // Execute post
+             $result = curl_exec($ch);
+
+             // Close connection
+             curl_close($ch);
+             echo $result;
+
+    }
+    else {
+    //Do nothing
+    }
+
+
+?>

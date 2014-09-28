@@ -1,0 +1,255 @@
+﻿body 
+{
+	background-image: url('images/background/TallyRecBackground.png');
+	background-repeat: repeat;
+}
+
+
+#testHeader 
+{
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #ceFF0d /*{a-bar-background-start}*/), to( #67aa06 /*{a-bar-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #ceFF0d /*{a-bar-background-start}*/, #67aa06 /*{a-bar-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #ceFF0d /*{a-bar-background-start}*/, #67aa06 /*{a-bar-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #ceFF0d /*{a-bar-background-start}*/, #67aa06 /*{a-bar-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #ceFF0d /*{a-bar-background-start}*/, #67aa06 /*{a-bar-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #ceFF0d /*{a-bar-background-start}*/, #67aa06 /*{a-bar-background-end}*/);
+    border-bottom: 1px solid black;
+}
+p 
+{
+    text-align:center;
+}
+
+/* Content */
+
+#chatRecipient
+{
+    width: 100%;
+    display: inline-block;
+}
+
+#chatSender
+{
+    width: 100%;
+    display: inline-block;
+}
+
+.chatTimeStampRecipient
+{
+    text-align: center;
+}
+
+.chatTimeStampSender
+{
+    text-align: center;
+}
+
+.leftchat 
+{
+    float:left;
+    border: 1px solid black;
+    position: relative;
+    height: auto;
+    width: 95%;
+    padding: 2px;
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #48739d /*{a-bar-background-start}*/), to( #3f576e /*{a-bar-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #48739d /*{a-bar-background-start}*/, #3f576e /*{a-bar-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #48739d /*{a-bar-background-start}*/, #3f576e /*{a-bar-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #48739d /*{a-bar-background-start}*/, #3f576e /*{a-bar-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #48739d /*{a-bar-background-start}*/, #3f576e /*{a-bar-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #48739d /*{a-bar-background-start}*/, #3f576e /*{a-bar-background-end}*/);
+    color:#fff;
+    border-radius: 15px;
+    margin: 10px;
+}
+
+.leftchat:after 
+{
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: -11px;
+    border-style: solid;
+    border-width: 7px 11px 7px 0;
+    border-color: transparent black;
+    display: block;
+    width: 0;
+    z-index: 1;
+    
+}
+
+.rightchat 
+{
+    float: right;
+    border: 1px solid black;
+    position: relative;
+    width: 95%;
+    height: auto;
+    padding: 2px;
+    color: #3f576e;
+    word-wrap: break-word;
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #f9f9f9 /*{a-bar-background-start}*/), to( #a8a2a2 /*{a-bar-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #f9f9f9 /*{a-bar-background-start}*/, #a8a2a2 /*{a-bar-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #f9f9f9 /*{a-bar-background-start}*/, #a8a2a2 /*{a-bar-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #f9f9f9 /*{a-bar-background-start}*/, #a8a2a2 /*{a-bar-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #f9f9f9 /*{a-bar-background-start}*/, #a8a2a2 /*{a-bar-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #f9f9f9 /*{a-bar-background-start}*/, #a8a2a2 /*{a-bar-background-end}*/);
+    text-align: right;
+    border-radius: 15px;
+    margin: 10px;
+}
+
+.rightchat:after 
+{
+    content: "";
+    position: absolute;
+    top: 12px;
+    right: -11px;
+    border-style: solid;
+    border-width: 7px 0 7px 11px;
+    border-color: transparent black;
+    display: block;
+    width: 0;
+    z-index: 1;
+    color: #3f576e;
+}
+
+
+#chatMessages
+{
+    
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    height: 100%;   
+}
+
+#consoleMainWrap 
+{
+    min-height: 50%;
+    min-width: 50%;
+    padding: 20px;
+}
+
+.customTable 
+{
+     width: 100%; 
+     padding: 1%; 
+     background: white;
+     border: 1px solid black;
+     border-radius: 15px;
+}
+
+.wrapStartTeam
+{
+     padding-top: 5px;
+}
+
+.rosterImg 
+{
+    max-width: 50%;
+    max-height: 50%;
+    border-radius: 15px;
+}
+
+.personImg 
+{
+    max-width: 125%;
+    max-height: 125%;
+}
+
+.indexLogo 
+{
+    max-width: 75%;
+    max-height: 75%;
+}
+
+.ui-icon-chat {
+	background:  url('images/icons/IconChat18x18.png') no-repeat rgba(0, 0, 0, 0.4) !important;
+}
+
+#ChatMessages 
+{
+    position: absolute;
+    overflow-y: scroll;
+    overflow-x: visible;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    height: 100%;
+}
+
+.navIcons
+{
+    text-align: center;  
+    font-size: 9pt;
+}
+
+.navIcons :active
+{
+    background-image: -ms-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #3F576E 70%);
+    background-image: -moz-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #3F576E 70%);
+    background-image: -o-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #3F576E 70%);
+    background-image: -webkit-gradient(radial, center center, 0, center center, 448, color-stop(0, #FFFFFF), color-stop(.7, #3F576E));
+    background-image: -webkit-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #3F576E 70%);
+    background-image: radial-gradient(circle farthest-corner at center, #FFFFFF 0%, #3F576E 70%);
+    border-radius: 15px;
+}
+
+.navIconImg 
+{
+    max-width: 36px; 
+    min-width: 36px;
+    vertical-align: middle;
+    font-size: 10pt;
+}
+
+.navIconImgBottom
+{
+    max-width: 10%; 
+    min-width: 10%;
+    vertical-align: middle;
+    font-size: 10pt;
+}
+
+.SportImgLarge 
+{
+    max-width: 50%;
+}
+
+.StatsTblCells 
+{
+    width: 50%;
+    text-align: center;
+    font-size: 8pt;
+}
+
+#sendChatBtn 
+{
+    background-image: -ms-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #3F576E 70%);
+    background-image: -moz-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #3F576E 70%);
+    background-image: -o-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #3F576E 70%);
+    background-image: -webkit-gradient(radial, center center, 0, center center, 448, color-stop(0, #FFFFFF), color-stop(.7, #3F576E));
+    background-image: -webkit-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #3F576E 70%);
+    background-image: radial-gradient(circle farthest-corner at center, #FFFFFF 0%, #3F576E 70%);
+}
+
+#backBtnPressed :active
+{
+    background-image: -ms-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #FFFFFF 70%);
+    background-image: -moz-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #FFFFFF 70%);
+    background-image: -o-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #FFFFFF 70%);
+    background-image: -webkit-gradient(radial, center center, 0, center center, 448, color-stop(0, #FFFFFF), color-stop(.7, #FFFFFF));
+    background-image: -webkit-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #FFFFFF 70%);
+    background-image: radial-gradient(circle farthest-corner at center, #FFFFFF 0%, #FFFFFF 70%);
+    border-radius: 15px;
+}
+
+.ui-panel-inner {padding:0;}
+
+.ui-icon-scheduleNav
+{
+    background-image: url("images/navIcons/IconSchedule.png");
+}
